@@ -1,66 +1,42 @@
-import React from 'react';
+import React, { useReducer } from 'react';
 import ReactDOM from 'react-dom';
-import TodoList from './components/TodoList'
-import TodoForm from './components/TodoForm'
+import { reducer, initialState } from './reducers/reducer';
+import { setTodo } from './actions/actions';
 
-const todos = [
-  {
-    name: "Add New Items",
-    id: 123,
-    completed: false
-  }
-];
 
-class App extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      todos: todos
-    }
-  }
+const App = () => {
 
-  handleToggleItem = (itemId)=>{
-    this.setState({
-      todos:this.state.todos.map(item=>{
-        if(item.id === itemId) {
-          return {
-            ...item,
-            completed: !item.completed
-          }
-        } else {
-          return item;
-        }
-      })
-    })
-  }
+  const [state, dispatch] = useReducer(reducer, initialState);
 
-  handleAddItem = (name) => {
-    this.setState({
-      todos: [...this.state.todos, {
-        name: name,
-        id: this.state.todos.length,
-        completed: false
-      }]
-    })
-  }
 
-  clearItems = () => {
-    this.setState({
-      todos: this.state.todos.filter(item=> (!item.completed))
-    });
-  }
 
-  render() {
-    return (
-      <div className="TodoApp">
-          <div className="Header">
-            <h1>Todo List</h1>
-            <TodoForm handleAddItem={this.handleAddItem}/>
-          </div>
-        <TodoList handleClearItems={this.clearItems} handleToggleItem={this.handleToggleItem} todos={this.state.todos} />
-      </div>
-    );
-  }
+  const handleChanges = e => {
+    dispatch(setTodo(e.target.value));
+  };
+
+  return (
+    <div className="TodoApp">
+        <div className="Header">
+          <h1>Todo List</h1>
+          <form>
+            <input 
+            type="text"
+            name="item"
+            value={state.newTodo}
+            onChange={handleChanges}
+            />
+            <button
+            onClick={() => {
+              dispatch(setTodo(state.newTodo));
+            }}>
+              Add
+            </button>
+          </form>
+          <p>{state.item}</p>
+          <button> Clear Completed </button>
+        </div>
+    </div>
+  );
 }
 
 const rootElement = document.getElementById('root');
