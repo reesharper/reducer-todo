@@ -14,6 +14,7 @@ const initialState = {
     },
   ],
   newTodo: '',
+
 };
 
 const reducer = (state, action) => {
@@ -33,10 +34,22 @@ const reducer = (state, action) => {
       });
 
     case(SET_COMPLETED):
-      return({...state, completed:action.payload});
+      return({
+        ...state, 
+        todos: state.todos.map(item => {
+          if(item.id === action.payload) {
+            return {
+              ...item,
+              completed: !item.completed
+            }
+          } else {
+            return item
+          }
+        })
+      });
 
-    // case(CLEAR_COMPLETED):
-    //   return({...state, completed:action.payload});
+    case(CLEAR_COMPLETED):
+      return({...state, todos:action.payload.filter(item => (!item.completed))});
 
     default:
       return(state);

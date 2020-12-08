@@ -12,8 +12,8 @@ export const addTodo = (name) => {
   return({type:ADD_TODO, payload:name})
 }
 
-export const setCompleted = (completed) => {
-  return({type:SET_COMPLETED, payload:completed})
+export const setCompleted = (itemId) => {
+  return({type:SET_COMPLETED, payload:itemId})
 }
 
 export const clearCompleted = (todo) => {

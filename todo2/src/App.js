@@ -13,11 +13,15 @@ function App() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(addTodo(state.newTodo))
+    dispatch(addTodo(state.newTodo));
   }
 
-  const handleToggle = (e) => {
-    dispatch(setCompleted(true))
+  const handleToggle = (id) => {
+    dispatch(setCompleted(id));
+  }
+
+  const handleClear = () => {
+    dispatch(clearCompleted(state.todos))
   }
 
   return (
@@ -34,12 +38,12 @@ function App() {
       </form>
       <div className='todo'>
         {state.todos.map(item => (
-          <div onClick={handleToggle} className={`item${item.completed ? 'completed' : ''}`}>
+          <div onClick={() => handleToggle(item.id)} className={`item ${item.completed ? 'completed' : ''}`}>
           <p>{item.name}</p>
           </div>
         ))}
       </div>
-      <button> Clear Completed </button>
+      <button onClick={handleClear}> Clear Completed </button>
     </div>
   );
 }
